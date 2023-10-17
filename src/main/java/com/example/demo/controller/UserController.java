@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.UserRequestDto;
 import com.example.demo.dto.UserResponseDto;
-import com.example.demo.dto.UpdateUserDTO;
+import com.example.demo.dto.UserUpdateDTO;
 import com.example.demo.service.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -12,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,7 +42,7 @@ public class UserController {
 
   @PutMapping("{id}")
   @ResponseStatus(HttpStatus.OK)
-  public UserResponseDto updateUser(@PathVariable UUID id, @RequestBody @Valid UpdateUserDTO updatedCreateUserDto) {
+  public UserResponseDto updateUser(@PathVariable UUID id, @RequestBody @Valid UserUpdateDTO updatedCreateUserDto) {
     return userService.updateUser(id, updatedCreateUserDto);
   }
 

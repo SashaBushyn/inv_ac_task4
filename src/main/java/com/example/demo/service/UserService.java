@@ -2,7 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.UserRequestDto;
 import com.example.demo.dto.UserResponseDto;
-import com.example.demo.dto.UpdateUserDTO;
+import com.example.demo.dto.UserUpdateDTO;
 import com.example.demo.entity.UserEntity;
 import com.example.demo.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -39,7 +39,7 @@ public class UserService {
     userRepository.deleteById(id);
   }
 
-  public UserResponseDto updateUser(UUID id, UpdateUserDTO updatedCreateUserDto) {
+  public UserResponseDto updateUser(UUID id, UserUpdateDTO updatedCreateUserDto) {
     UserEntity existingUser = userRepository.findById(id)
         .orElseThrow(() -> new EntityNotFoundException(String.format("user with id: %s was not found", id)));
     existingUser.setFirstName(updatedCreateUserDto.getFirstName());

@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)
-public class UpdateUserDTO {
+public class UserUpdateDTO {
   @NotBlank
   private String firstName;
   @NotBlank
