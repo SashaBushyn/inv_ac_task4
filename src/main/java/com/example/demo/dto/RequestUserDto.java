@@ -7,9 +7,6 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Null;
 import lombok.Data;
 import lombok.experimental.Accessors;
-
-
-
 import java.util.UUID;
 
 @Data
