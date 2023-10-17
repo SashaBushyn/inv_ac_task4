@@ -2,16 +2,20 @@ package com.example.demo.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Null;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import javax.validation.Valid;
-import javax.validation.constraints.*;
+
+
 import java.util.UUID;
 
 @Data
 @Accessors(chain = true)
 public class RequestUserDto {
+
   @Null
   private UUID id;
 
@@ -23,7 +27,6 @@ public class RequestUserDto {
 
   @NotEmpty(message = "email mustn't be blank")
   @Email
-  @Valid
   private String email;
 
   @NotEmpty(message = "password mustn't be blank")

@@ -1,17 +1,22 @@
 package com.example.demo.dto;
 
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
+
 
 @Data
 @Accessors(chain = true)
 public class UpdateUserDTO {
-    @NotEmpty
+
+    @NotBlank
     private String firstName;
-    @NotEmpty
+
+   @NotBlank
     private String lastName;
     @NotEmpty(message = "email mustn't be blank")
     @Email
