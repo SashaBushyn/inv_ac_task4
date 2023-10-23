@@ -32,14 +32,12 @@ public class JwtFilter extends OncePerRequestFilter {
   protected void doFilterInternal(HttpServletRequest req,
                                   @NonNull HttpServletResponse resp,
                                   @NonNull FilterChain chain) throws ServletException, IOException {
-
     final String bearer = req.getHeader("Authorization");
     if (!headerWithTokenIsValid(bearer)) {
       log.info("JWT FILTER: Token not found: " + req.getRemoteAddr());
       chain.doFilter(req, resp);
       return;
     }
-
     final String token = extractToken(bearer);
     log.info("JWT FILTER: Token found: " + token);
 

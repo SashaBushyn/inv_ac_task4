@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.dto.UserRequestDto;
 import com.example.demo.dto.UserResponseDto;
 import com.example.demo.dto.UserUpdateDTO;
+import com.example.demo.entity.Role;
 import com.example.demo.entity.UserEntity;
 import com.example.demo.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -25,6 +26,7 @@ public class UserService implements UserDetailsService {
   public UserResponseDto save(UserRequestDto userRequestDTO) {
     UserEntity user = modelMapper.map(userRequestDTO, UserEntity.class);
     user.setIsActive(true);
+    user.setRole(Role.ROLE_USER);
     return modelMapper.map(userRepository.save(user), UserResponseDto.class);
   }
 
