@@ -1,6 +1,7 @@
 server:
   port: 9090
-
+jwt:
+  secret: $2a$10$MoBWTFprbCWN9tXBEtgvM.C.vn5ox2MV6qgw9jlRu4jASuaLL5uDa
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/userDB

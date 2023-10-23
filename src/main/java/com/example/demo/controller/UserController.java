@@ -22,12 +22,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
   private final UserService userService;
 
-  @PostMapping()
-  @ResponseStatus(HttpStatus.CREATED)
-  public UserResponseDto saveUser(@RequestBody @Valid UserRequestDto userRequestDTO) {
-    return userService.save(userRequestDTO);
-  }
-
   @GetMapping("{email}")
   @ResponseStatus(HttpStatus.OK)
   public UserResponseDto findUserByEmail(@PathVariable() @Email String email) {

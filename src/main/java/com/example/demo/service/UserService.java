@@ -11,11 +11,14 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService {
   private final UserRepository userRepository;
   private final ModelMapper modelMapper;
 
@@ -45,5 +48,11 @@ public class UserService {
     existingUser.setFirstName(updatedCreateUserDto.getFirstName());
     existingUser.setLastName(updatedCreateUserDto.getLastName());
     return modelMapper.map(userRepository.save(existingUser), UserResponseDto.class);
+  }
+
+  @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    return userRepository.findByEmail(username)
+        .orElseThrow(() -> new EntityNotFoundException(String.format("user with email: %s was not found", username)));
   }
 }
