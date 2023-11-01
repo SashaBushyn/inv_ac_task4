@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import static org.mockito.Mockito.when;
+
 import com.example.demo.config.security.JwtProvider;
 import com.example.demo.dto.TokenResponse;
 import com.example.demo.dto.UserRequestDto;
@@ -16,8 +18,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @AutoConfigureMockMvc
