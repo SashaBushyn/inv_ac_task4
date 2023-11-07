@@ -5,56 +5,56 @@ import com.example.demo.dto.UserResponseDto;
 import com.example.demo.dto.UserUpdateDTO;
 import com.example.demo.entity.Role;
 import com.example.demo.entity.UserEntity;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.repository.UserDao;
 import jakarta.persistence.EntityNotFoundException;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
-  private final UserRepository userRepository;
-  private final ModelMapper modelMapper;
+    private final UserDao userDao;
+    private final ModelMapper modelMapper;
 
-  public UserResponseDto save(UserRequestDto userRequestDTO) {
-    UserEntity user = modelMapper.map(userRequestDTO, UserEntity.class);
-    user.setIsActive(true);
-    user.setRole(Role.ROLE_USER);
-    return modelMapper.map(userRepository.save(user), UserResponseDto.class);
-  }
+    public UserResponseDto save(UserRequestDto userRequestDTO) {
+        UserEntity user = modelMapper.map(userRequestDTO, UserEntity.class);
+        user.setIsActive(true);
+        user.setRole(Role.ROLE_USER);
+        return modelMapper.map(userDao.save(user), UserResponseDto.class);
+    }
 
-  public UserResponseDto getByEmail(String email) {
-    return userRepository.findByEmail(email).map(u -> modelMapper.map(u, UserResponseDto.class))
-        .orElseThrow(() -> new EntityNotFoundException(String.format("user with email: %s was not found", email)));
-  }
+    public UserResponseDto getByEmail(String email) {
+        return userDao.findByEmail(email).map(u -> modelMapper.map(u, UserResponseDto.class))
+                .orElseThrow(() -> new EntityNotFoundException(String.format("user with email: %s was not found", email)));
+    }
 
-  public Page<UserResponseDto> getAllUsers(Pageable pageable) {
-    Page<UserEntity> userPage = userRepository.findAll(pageable);
-    return userPage.map(userEntity -> modelMapper.map(userEntity, UserResponseDto.class));
-  }
+    public List<UserResponseDto> getAllUsers() {
+        List<UserEntity> userEntities = userDao.findAll();
+        return userEntities.stream().map(userEntity -> modelMapper.map(userEntity, UserResponseDto.class)).toList();
+    }
 
-  public void deleteById(UUID id) {
-    userRepository.deleteById(id);
-  }
+    public void deleteById(UUID id) {
+        userDao.deleteUser(id);
+    }
 
-  public UserResponseDto updateUser(UUID id, UserUpdateDTO updatedCreateUserDto) {
-    UserEntity existingUser = userRepository.findById(id)
-        .orElseThrow(() -> new EntityNotFoundException(String.format("user with id: %s was not found", id)));
-    existingUser.setFirstName(updatedCreateUserDto.getFirstName());
-    existingUser.setLastName(updatedCreateUserDto.getLastName());
-    return modelMapper.map(userRepository.save(existingUser), UserResponseDto.class);
-  }
+    public UserResponseDto updateUser(UUID id, UserUpdateDTO updatedCreateUserDto) {
+        UserEntity existingUser = userDao.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("user with id: %s was not found", id)));
+        existingUser.setFirstName(updatedCreateUserDto.getFirstName());
+        existingUser.setLastName(updatedCreateUserDto.getLastName());
+        return modelMapper.map(userDao.save(existingUser), UserResponseDto.class);
+    }
 
-  @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    return userRepository.findByEmail(username)
-        .orElseThrow(() -> new EntityNotFoundException(String.format("user with email: %s was not found", username)));
-  }
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userDao.findByEmail(username)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("user with email: %s was not found", username)));
+    }
 }
